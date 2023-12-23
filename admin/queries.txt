@@ -1,0 +1,27 @@
+join query:
+SELECT gifts.title AS gift_title, promotions.title AS promotion_title,promotions.description As promo, promotions.*, gifts.* FROM `promotions`
+INNER JOIN gifts ON gifts.id = promotions.productno
+--------------------------------------------------------------
+show the gifts with discounted price
+SELECT 
+    g.id,
+    g.title,
+    g.description,
+    g.status,
+    g.photo,
+    g.category,
+    g.purchasingPrice,
+    g.purchasingDate,
+    g.qty,
+    g.salePrice,
+    g.remarks,
+    p.discount,
+    CASE
+        WHEN p.discount IS NOT NULL THEN g.salePrice - (g.salePrice * p.discount / 100)
+        ELSE g.salePrice
+    END AS discountedPrice
+FROM
+    gifts g
+LEFT JOIN
+    promotions p ON p.productno = g.id;
+
